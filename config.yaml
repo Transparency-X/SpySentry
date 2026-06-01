@@ -1,0 +1,120 @@
+# YARA Scanner Configuration for SpySentry
+# This file configures the YARA scanner module, including rule directories,
+# scan paths, and performance settings.
+
+# Enable/disable YARA scanner
+enabled: true
+
+# Directory containing YARA rules
+rules_dir: "rules/yara"
+
+# Default scan paths (can be overridden via CLI)
+scan_paths:
+  - "/tmp"
+  - "/var/log"
+  - "/home/user/Downloads"
+
+# Recursive scanning (scan subdirectories)
+recursive: true
+
+# Maximum file size to scan (in bytes). Files larger than this will be skipped.
+max_file_size: 104857600  # 100MB
+
+# File extensions to include (empty list = all files)
+include_extensions:
+  - ".exe"
+  - ".dll"
+  - ".so"
+  - ".apk"
+  - ".pdf"
+  - ".doc"
+  - ".docx"
+  - ".xls"
+  - ".xlsx"
+  - ".js"
+  - ".py"
+  - ".sh"
+  - ".bin"
+  - ".dat"
+
+# File extensions to exclude (overrides include_extensions)
+exclude_extensions:
+  - ".jpg"
+  - ".jpeg"
+  - ".png"
+  - ".gif"
+  - ".mp3"
+  - ".mp4"
+  - ".zip"
+  - ".tar"
+  - ".gz"
+
+# Performance settings
+performance:
+  # Number of threads for parallel scanning (0 = auto)
+  threads: 4
+  
+  # Maximum memory usage (in MB). 0 = no limit.
+  max_memory: 2048
+
+# Logging settings
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  file: "logs/yara_scanner.log"  # Log file path (empty = no file logging)
+
+# Output settings
+output:
+  # Default output file path
+  default_path: "reports/yara_scan_results.json"
+  
+  # Output format (json, csv)
+  format: "json"
+
+# YARA rule compilation settings
+compilation:
+  # Recompile rules on startup (set to false for production to improve performance)
+  recompile_on_startup: true
+  
+  # Maximum time to wait for rule compilation (in seconds)
+  compilation_timeout: 30
+
+# External rule repositories (for automatic updates)
+repositories:
+  - name: "YARA-Rules"
+    url: "https://github.com/Yara-Rules/rules"
+    branch: "main"
+    enabled: true
+    
+  - name: "Florian Roth"
+    url: "https://github.com/Neo23x0/signature-base"
+    branch: "master"
+    enabled: true
+    
+  - name: "Elastic YARA Rules"
+    url: "https://github.com/elastic/protections-artifacts"
+    branch: "main"
+    enabled: false  # Disabled by default (requires API key)
+
+# Custom rule paths (additional directories to load rules from)
+custom_rules:
+  - "rules/yara/custom"
+  - "rules/yara/ioc"
+
+# Ignore files/directories (regex patterns)
+ignore_patterns:
+  - "^\.git/"
+  - "^\.vscode/"
+  - "^__pycache__/"
+  - "^\.DS_Store$"
+  - "^\.Trash/"
+
+# Advanced settings
+advanced:
+  # Follow symbolic links during directory scans
+  follow_symlinks: false
+  
+  # Skip files with permission errors
+  skip_permission_errors: true
+  
+  # Hash files that match YARA rules (for deduplication)
+  hash_matches: true
